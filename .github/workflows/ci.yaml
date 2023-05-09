@@ -1,0 +1,25 @@
+name: E2E Tests
+
+on:
+  push:
+
+jobs:
+  run-cypress-tests:
+    runs-on: [ubuntu-latest]
+    container: cypress/included:12.11.0
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Cypress run
+        uses: cypress-io/github-action@v5.6.1
+
+      - name: Archive Test Report (If Fails)
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-report
+          path: |
+            ./cypress/screenshots/
+            ./cypress/videos/
+          retention-days: 7
