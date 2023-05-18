@@ -6,5 +6,8 @@
     "cyopen": "npx cypress open",
     "cyrun": "npx cypress run",
     "cyrun:chrome": "npm run cyrun -- --browser chrome"
+  },
+  "devDependencies": {
+    "cypress-xpath": "^2.0.1"
   }
 }
