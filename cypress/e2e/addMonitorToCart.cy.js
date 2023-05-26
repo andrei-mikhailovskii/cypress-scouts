@@ -5,19 +5,19 @@ describe('Add Monitor to Cart', () => {
         cy.visit('https://www.demoblaze.com')
 
         // in the left navigation bar, click Monitors
-        cy.xpath('//a[contains(text(), "Monitors")]').click()
+        cy.contains('Monitors').click()
 
         // click the first item in the grid
         cy.get('.hrefch').eq(0).click()
 
         // click Add to cart button
-        cy.get('.btn-lg').click()
+        cy.contains('Add to cart').click()
 
         // click Cart button
-        cy.get('#cartur').click()
+        cy.contains('Cart').click()
 
         // click Place Order button
-        cy.get('.btn-success').click()
+        cy.contains('Place Order').click()
 
         // fill all text fields
         cy.get('#name').type('testName')
@@ -28,7 +28,7 @@ describe('Add Monitor to Cart', () => {
         cy.get('#year').type('2025')
 
         // click Purchase button
-        cy.xpath('//button[@onclick="purchaseOrder()"]').click()
+        cy.contains('Purchase').click()
 
         // assert will be here
         

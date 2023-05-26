@@ -8,13 +8,13 @@ describe('Check Order Amount', () => {
         cy.get('.hrefch').eq(0).click()
 
         // click Add to cart button
-        cy.get('.btn-lg').click()
+        cy.contains('Add to cart').click()
 
         // click Add to cart button again
-        cy.get('.btn-lg').click()
+        cy.contains('Add to cart').click()
 
         // click Cart button
-        cy.get('#cartur').click()
+        cy.contains('Cart').click()
 
         // assert will be here
         
