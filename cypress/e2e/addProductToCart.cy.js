@@ -19,10 +19,10 @@ describe('Add product to cart', () => {
     cy.get('.hrefch').eq(0).click();
 
     // click Add to cart button
-    cy.contains('Add to cart').click();
+    cy.contains('.btn', 'Add to cart').click();
 
     // click Cart button
-    cy.contains('Cart').click();
+    cy.contains('#cartur', 'Cart').click();
 
     // verify if item is in the cart
     cy.get('.success > td')
