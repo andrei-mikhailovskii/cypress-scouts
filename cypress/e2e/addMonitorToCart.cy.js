@@ -26,6 +26,9 @@ describe('Add Monitor to Cart', () => {
         // click Cart button
         cy.contains('#cartur', 'Cart').click();
 
+        // save total amount in Cart for further check
+        cy.get("#totalp").invoke('text').as('totalPriceInCart');
+
         // click Place Order button
         cy.contains('.btn', 'Place Order').click();
 
@@ -43,44 +46,45 @@ describe('Add Monitor to Cart', () => {
         // click Purchase button
         cy.contains('.btn', 'Purchase').click();
 
-        cy.get("#totalp").invoke('text').then((totalPriceText) => {
+        // save total amount in Cart to compare it with the amount in the Thank you for your purchase! alert
+        //const totalPriceInCart = parseInt(totalPriceText, 10);
+        
+        cy.get('.lead').should('be.visible');
 
-            // save total amount in Cart to compare it with the amount in the Thank you for your purchase! alert
-            const totalPriceInCart = parseInt(totalPriceText, 10);
+        cy.get('@totalPriceInCart').then((totalPriceInCart) => {
+
+            cy.get('.lead').invoke('text').as('alertText');
             
-            cy.get('.lead').should('be.visible').then((domElementWithText) => {
-                const text = domElementWithText.text();
-              
-                // check if Id is not empty
-                expect(text).to.match(/Id: \d+/);
-              
-                // check if Amount is equal to the amount in Cart
-                expect(text).to.include(`Amount: ${totalPriceInCart} USD`);
-              
-                // check if Card Number equals "card" variable
-                expect(text).to.include(`Card Number: ${card}`);
-    
-                // check if Name equals "name" variable
-                expect(text).to.include(`Name: ${name}`);
-    
-                // check if Date is not empty
-                expect(text).to.match(/Date: \d+\/\d+\/\d+/);
-                // check if Date is current date
-                // this check is commented out because there is a bug on the webiste: the date is displayed one month earlier
-                // expect(text).to.include(`Date: ${todaysDate}`);
-    
-              });
+            // check if Id is not empty
+            cy.get('@alertText').should('match', /Id: \d+/);
 
-          });
-
-          /* wait is set here because the "success tick" animation should be finished or something else before "OK" button is clicked,
-          otherwise Place order modal winow is not closed, and there is no redirection to ~/index.html page*/
-          cy.wait(1000);
-
-          cy.get('button.confirm').contains('OK').click();
+            // check the correctness of Amount
+            const expectedPriceText = 'Amount: ' + totalPriceInCart + ' USD';
+            cy.get('@alertText').should('include', expectedPriceText);
           
-          // check if redirect to home page has happened
-          cy.url().should('eq', 'https://www.demoblaze.com/index.html');
+            // check if Card Number equals "card" variable
+            cy.get('@alertText').should('include', `Card Number: ${card}`);
+
+            // check if Name equals "name" variable
+            cy.get('@alertText').should('include', `Name: ${name}`);
+
+            // check if Date is not empty
+            cy.get('@alertText').should('match', /Date: \d+\/\d+\/\d+/);
+            // check if Date is current date
+            // this check is commented out because there is a bug on the webiste: the date is displayed one month earlier
+            // expect(text).to.include(`Date: ${todaysDate}`);
+
+        });
+
+
+        /* wait is set here because the "success tick" animation should be finished or something else before "OK" button is clicked,
+        otherwise Place order modal winow is not closed, and there is no redirection to ~/index.html page*/
+        cy.wait(1000);
+
+        cy.get('button.confirm').contains('OK').click();
+        
+        // check if redirect to home page has happened
+        cy.url().should('eq', 'https://www.demoblaze.com/index.html');
           
     })
 })
