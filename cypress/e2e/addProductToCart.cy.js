@@ -1,3 +1,5 @@
+Cypress._.times(10, () => {
+  
 describe('Add product to cart', () => {
   it('Checks if product added to cart', () => {
 
@@ -34,3 +36,5 @@ describe('Add product to cart', () => {
       
   })
 })
+
+});

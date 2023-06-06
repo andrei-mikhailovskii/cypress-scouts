@@ -1,4 +1,5 @@
 describe('Check Order Amount', () => {
+  Cypress._.times(5, () => {
     it('Checks the sum of two identical items in the cart', () => {
 
         // open website
@@ -38,4 +39,5 @@ describe('Check Order Amount', () => {
         });
 
     })
+  })
 })
