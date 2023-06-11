@@ -1,5 +1,7 @@
 const dayjs = require('dayjs');
 
+Cypress._.times(5, () => {
+
 describe('Add Monitor to Cart', () => {
     it('Checks if monitor added to cart', () => {
 
@@ -33,10 +35,10 @@ describe('Add Monitor to Cart', () => {
         cy.contains('.btn', 'Place Order').click();
 
         // wait is set here because sometimes the name field is not filled up completely, and the corresponding assert fails
-        cy.wait(1000)
+        cy.wait(1000);
 
         // fill all text fields
-        cy.get('#name').type(name);
+        cy.get('#name').type(name, {delay : 100});
         cy.get('#country').type(country);
         cy.get('#city').type(city);
         cy.get('#card').type(card);
@@ -88,3 +90,5 @@ describe('Add Monitor to Cart', () => {
           
     })
 })
+
+});
