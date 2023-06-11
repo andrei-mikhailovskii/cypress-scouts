@@ -14,7 +14,7 @@ describe('Add Monitor to Cart', () => {
         const todaysDate = dayjs().format('D/M/YYYY');
 
         // open website
-        cy.visit('https://www.demoblaze.com');
+        cy.visit('/');
 
         // in the left navigation bar, click Monitors
         cy.contains('.list-group-item', 'Monitors').click();

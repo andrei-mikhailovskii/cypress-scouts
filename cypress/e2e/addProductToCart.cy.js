@@ -7,7 +7,7 @@ describe('Add product to cart', () => {
     let productTitle;
 
     // open website
-    cy.visit('https://www.demoblaze.com');
+    cy.visit('/');
 
     // save first item name for future comparison
     cy.get('.hrefch')
