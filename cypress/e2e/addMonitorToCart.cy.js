@@ -1,7 +1,5 @@
 const dayjs = require('dayjs');
 
-Cypress._.times(1, () => {
-
 describe('Add Monitor to Cart', () => {
     it('Checks if monitor added to cart', () => {
 
@@ -14,7 +12,7 @@ describe('Add Monitor to Cart', () => {
         const todaysDate = dayjs().format('D/M/YYYY');
 
         // open website
-        cy.visit('/');
+        cy.visit('https://www.demoblaze.com');
 
         // in the left navigation bar, click Monitors
         cy.contains('.list-group-item', 'Monitors').click();
@@ -34,12 +32,11 @@ describe('Add Monitor to Cart', () => {
         // click Place Order button
         cy.contains('.btn', 'Place Order').click();
 
-        // wait is set here because sometimes the name field is not filled up completely, 
-        // and the corresponding assert fails
-        cy.wait(1000);
+        // wait is set here because sometimes the name field is not filled up completely, and the corresponding assert fails
+        cy.wait(1000)
 
         // fill all text fields
-        cy.get('#name').type(name, {delay:100});
+        cy.get('#name').type(name);
         cy.get('#country').type(country);
         cy.get('#city').type(city);
         cy.get('#card').type(card);
@@ -91,5 +88,3 @@ describe('Add Monitor to Cart', () => {
           
     })
 })
-
-});

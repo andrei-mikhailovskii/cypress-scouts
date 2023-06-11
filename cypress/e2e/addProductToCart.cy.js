@@ -1,4 +1,4 @@
-Cypress._.times(5, () => {
+Cypress._.times(10, () => {
   
 describe('Add product to cart', () => {
   it('Checks if product added to cart', () => {
@@ -7,7 +7,7 @@ describe('Add product to cart', () => {
     let productTitle;
 
     // open website
-    cy.visit('/');
+    cy.visit('https://www.demoblaze.com');
 
     // save first item name for future comparison
     cy.get('.hrefch')
