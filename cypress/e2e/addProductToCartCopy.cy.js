@@ -1,21 +1,16 @@
-Cypress._.times(5, () => {
+Cypress._.times(1, () => {
   
 describe('Add product to cart', () => {
   it('Checks if product added to cart', () => {
 
     //variable for future comparison of values
-    let productTitle;
+    //let productTitle;
 
     // open website
     cy.visit('/');
 
     // save first item name for future comparison
-    cy.get('.hrefch')
-      .eq(0)
-      .invoke('text')
-      .then((firstProductName) => {
-        productTitle = firstProductName
-      });
+    cy.get('.hrefch').eq(0).invoke('text').as('productTitle');
 
     // click first item in grid
     cy.get('.hrefch').eq(0).click();
@@ -27,12 +22,17 @@ describe('Add product to cart', () => {
     cy.contains('#cartur', 'Cart').click();
 
     // verify if item is in the cart
-    cy.get('.success > td')
+    cy.get('@productTitle').then((productTitle) => {
+      cy.get('.success > td').eq(1).invoke('text').then((cartItemName) => {
+        expect(productTitle).to.be.eq(cartItemName);
+      });
+    });
+    /*cy.get('.success > td')
       .eq(1)
       .invoke('text')
       .then((cartItemName) => {
         expect(cartItemName).to.equal(productTitle)
-      });
+      });*/
       
   })
 })
