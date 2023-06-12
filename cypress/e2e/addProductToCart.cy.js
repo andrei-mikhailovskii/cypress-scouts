@@ -10,18 +10,18 @@ describe('Add product to cart', () => {
     cy.visit('/');
 
     // save first item name for future comparison
-    cy.get('.hrefch')
-      .eq(0)
+    cy.get('h4.card-title')
+      .first()
       .invoke('text')
       .then((firstProductName) => {
         productTitle = firstProductName
       });
 
     // click first item in grid
-    cy.get('.hrefch').eq(0).click();
+    cy.get('.hrefch').first().click();
 
     // click Add to cart button
-    cy.contains('.btn', 'Add to cart').click();
+    cy.contains('.btn', 'Add to cart').should('be.visible', { timeout: 5000 }).click();
 
     // click Cart button
     cy.contains('#cartur', 'Cart').click();
@@ -29,6 +29,7 @@ describe('Add product to cart', () => {
     // verify if item is in the cart
     cy.get('.success > td')
       .eq(1)
+      .should('be.visible', { timeout: 5000 })
       .invoke('text')
       .then((cartItemName) => {
         expect(cartItemName).to.equal(productTitle)

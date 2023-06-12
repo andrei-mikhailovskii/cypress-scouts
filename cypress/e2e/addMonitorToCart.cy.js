@@ -20,30 +20,30 @@ describe('Add Monitor to Cart', () => {
         cy.contains('.list-group-item', 'Monitors').click();
 
         // click the first item in the grid
-        cy.get('.hrefch').eq(0).click();
+        cy.get('.hrefch').first().click();
 
         // click Add to cart button
-        cy.contains('.btn', 'Add to cart').click();
+        cy.contains('.btn', 'Add to cart').should('be.visible', { timeout: 5000 }).click();
 
         // click Cart button
         cy.contains('#cartur', 'Cart').click();
 
         // save total amount in Cart for further check
-        cy.get("#totalp").invoke('text').as('totalPriceInCart');
+        cy.get("#totalp").should('be.visible', { timeout: 5000 }).invoke('text').as('totalPriceInCart');
 
         // click Place Order button
         cy.contains('.btn', 'Place Order').click();
 
         // wait is set here because sometimes the name field is not filled up completely, and the corresponding assert fails
-        cy.wait(1000);
+        //cy.wait(1000);
 
         // fill all text fields
-        cy.get('#name').type(name, {delay : 100});
-        cy.get('#country').type(country);
-        cy.get('#city').type(city);
-        cy.get('#card').type(card);
-        cy.get('#month').type(month);
-        cy.get('#year').type(year);
+        cy.get('#name').invoke('val', name);
+        cy.get('#country').invoke('val', country);
+        cy.get('#city').invoke('val', city);
+        cy.get('#card').invoke('val', card);
+        cy.get('#month').invoke('val', month);
+        cy.get('#year').invoke('val', year);
 
         // click Purchase button
         cy.contains('.btn', 'Purchase').click();
@@ -86,7 +86,7 @@ describe('Add Monitor to Cart', () => {
         cy.get('button.confirm').contains('OK').click();
         
         // check if redirect to home page has happened
-        cy.url().should('eq', 'https://www.demoblaze.com/index.html');
+        cy.url().should('eq', Cypress.config().baseUrl + '/index.html');
           
     })
 })

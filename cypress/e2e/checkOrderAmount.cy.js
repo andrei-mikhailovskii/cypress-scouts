@@ -6,20 +6,22 @@ describe('Check Order Amount', () => {
         cy.visit('/');
 
         // click the first item in the grid
-        cy.get('.hrefch').eq(0).click();
+        cy.get('.hrefch').first().click();
 
         // click Add to cart button
-        cy.contains('.btn', 'Add to cart').click();
+        cy.contains('.btn', 'Add to cart').should('be.visible', { timeout: 5000 }).click();
 
         // click Add to cart button again
-        cy.contains('.btn', 'Add to cart').click();
+        cy.contains('.btn', 'Add to cart').should('be.visible', { timeout: 5000 }).click();
 
         // click Cart button
         cy.contains('#cartur', 'Cart').click();
 
         let elementsArray = [];
 
-        cy.get('.success').each((itemInCart) => {
+        cy.get('.success')
+        .should('be.visible', { timeout: 5000 })
+        .each((itemInCart) => {
           // add each item in Cart to the array
           elementsArray.push(itemInCart);
         }).then(() => {
