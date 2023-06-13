@@ -23,3 +23,26 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+
+// Get first item in the grid of products
+Cypress.Commands.add('getFirstProductText', () => {
+    cy.get('h4.card-title')
+      .should('be.visible', { timeout: 5000 })
+      .first()
+      .invoke('text')
+      .as('productTitle');
+});
+
+Cypress.Commands.add('addFirstProductToCart', () => {
+    // click first item in grid
+    cy.get('.hrefch').first().click();
+    // click Add to cart button
+    cy.contains('.btn', 'Add to cart')
+        .should('be.visible', { timeout: 5000 })
+        .click();
+});
+
+Cypress.Commands.add('goToCart', () => {
+    // click Cart button
+    cy.contains('#cartur', 'Cart').click();
+});

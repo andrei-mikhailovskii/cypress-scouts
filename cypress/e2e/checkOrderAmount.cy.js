@@ -14,8 +14,7 @@ describe('Check Order Amount', () => {
         // click Add to cart button again
         cy.contains('.btn', 'Add to cart').should('be.visible', { timeout: 5000 }).click();
 
-        // click Cart button
-        cy.contains('#cartur', 'Cart').click();
+        cy.goToCart();
 
         let elementsArray = [];
 

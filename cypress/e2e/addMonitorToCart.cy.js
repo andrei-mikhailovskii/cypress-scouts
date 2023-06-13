@@ -19,14 +19,9 @@ describe('Add Monitor to Cart', () => {
         // in the left navigation bar, click Monitors
         cy.contains('.list-group-item', 'Monitors').click();
 
-        // click the first item in the grid
-        cy.get('.hrefch').first().click();
+        cy.addFirstProductToCart();
 
-        // click Add to cart button
-        cy.contains('.btn', 'Add to cart').should('be.visible', { timeout: 5000 }).click();
-
-        // click Cart button
-        cy.contains('#cartur', 'Cart').click();
+        cy.goToCart();
 
         // save total amount in Cart for further check
         cy.get("#totalp").should('be.visible', { timeout: 5000 }).invoke('text').as('totalPriceInCart');
