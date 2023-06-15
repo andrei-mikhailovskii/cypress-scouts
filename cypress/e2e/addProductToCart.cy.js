@@ -11,15 +11,18 @@ describe('Add product to cart', () => {
   it('Checks if Phone is added to cart', () => {
 
     // save first item name for future comparison
-    cy.getFirstProductText()
-      .as('phoneTitle')
-      .then((phoneTitle) => {
-        cy.wrap(phoneTitle).as('phoneTitleValue');
+    cy.get('h4.card-title')
+      .should('be.visible', { timeout: 5000 })
+      .first()
+      .invoke('text')
+      .as('productTitle')
+      .then((productTitle) => {
+        cy.wrap(productTitle).as('phoneTitleValue');
       });
     
-    cy.addFirstProductToCart();
+    cy.addProductToCart('.col-md-6:nth-child(1)>div>a');
 
-    cy.goToCart();
+    cy.contains('#cartur', 'Cart').click();
 
     // verify if item is in the cart
     cy.get('@phoneTitleValue').then((phoneTitleValue) => {
@@ -39,19 +42,23 @@ describe('Add product to cart', () => {
     // go to Laptops page
     cy.contains('.list-group-item', 'Laptops').click();
 
-    /* Wait until page is loaded because sometimes it is not loaded comletely, 
+    /* intercept() is used to wait until page is loaded because sometimes it is not loaded comletely, 
     and test takes DOM element of previous page (Phone) and final assert fails*/
-    cy.wait(1000);
+    cy.intercept('POST', 'https://api.demoblaze.com/bycat').as('bycat');
+    cy.wait('@bycat').its('response.statusCode').should('eq', 200);
 
-    cy.getFirstProductText()
-      .as('laptopTitle')
-      .then((laptopTitle) => {
-        cy.wrap(laptopTitle).as('laptopTitleValue');
+    cy.get('h4.card-title')
+      .should('be.visible', { timeout: 5000 })
+      .first()
+      .invoke('text')
+      .as('productTitle')
+      .then((productTitle) => {
+        cy.wrap(productTitle).as('laptopTitleValue');
       });
 
-    cy.addFirstProductToCart();
+    cy.addProductToCart('.col-md-6:nth-child(1)>div>a');
 
-    cy.goToCart();
+    cy.contains('#cartur', 'Cart').click();
 
     // verify if item is in the cart
     cy.get('@laptopTitleValue').then((laptopTitleValue) => {
@@ -65,6 +72,6 @@ describe('Add product to cart', () => {
     });
 
   });
-})
+});
 
 });
