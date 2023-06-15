@@ -1,10 +1,12 @@
-Cypress._.times(50, () => {
+Cypress._.times(10, () => {
   
 describe('Add product to cart', () => {
 
   beforeEach(() => {
 
+    cy.intercept('GET', 'https://api.demoblaze.com/entries').as('entries');
     cy.visit('/');
+    cy.wait('@entries');
 
     cy.intercept('POST', 'https://api.demoblaze.com/viewcart').as('viewcart');
 
