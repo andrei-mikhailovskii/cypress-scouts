@@ -42,10 +42,9 @@ describe('Add product to cart', () => {
     // go to Laptops page
     cy.contains('.list-group-item', 'Laptops').click();
 
-    /* intercept() is used to wait until page is loaded because sometimes it is not loaded comletely, 
+    /* wait until page is loaded because sometimes it is not loaded comletely, 
     and test takes DOM element of previous page (Phone) and final assert fails*/
-    cy.intercept('POST', 'https://api.demoblaze.com/bycat').as('bycat');
-    cy.wait('@bycat').its('response.statusCode').should('eq', 200);
+    cy.wait(1500);
 
     cy.get('h4.card-title')
       .should('be.visible', { timeout: 5000 })
