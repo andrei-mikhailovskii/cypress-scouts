@@ -14,31 +14,21 @@ describe('Check Order Amount', () => {
         // click Add to cart button again
         cy.contains('.btn', 'Add to cart').should('be.visible', { timeout: 5000 }).click();
 
-        cy.goToCart();
+        cy.contains('#cartur', 'Cart').click();
 
-        let elementsArray = [];
+        cy.get('.success').should('be.visible');
 
-        cy.get('.success')
-        .should('be.visible', { timeout: 5000 })
-        .each((itemInCart) => {
-          // add each item in Cart to the array
-          elementsArray.push(itemInCart);
-        }).then(() => {
-            let sumOfItems = 0;
-            elementsArray.forEach((elementOfArray) => {
-              // find price of each item in Cart, and find sum of them
-              const tdElement = elementOfArray.find('td:nth-child(3)');
-              const value = parseInt(tdElement.text(), 10);
-              sumOfItems += value;
-            });
-          
-            // find total price and compare it with sumOfItems
-            cy.get("#totalp").invoke('text').then((totalPriceText) => {
-              const totalPriceInt = parseInt(totalPriceText, 10);
-              expect(totalPriceInt).to.equal(sumOfItems);
-            });
+        // find the price of the first item in cart
+        cy.get('.success:nth-child(1)>td:nth-child(3)').invoke('text').then(parseInt).as('firstItemPrice');
+
+        // find the price of the second item in cart
+        cy.get('.success:nth-child(2)>td:nth-child(3)').invoke('text').then(parseInt).as('secondItemPrice');
+
+        // compare Total price with the sum of items in cart
+        cy.get('#totalp').invoke('text').then(parseInt).as('totalPrice').then(function() {
+          expect(this.firstItemPrice + this.secondItemPrice).to.eq(this.totalPrice);
         });
 
-    })
-  })
-})
+    });
+  });
+});
