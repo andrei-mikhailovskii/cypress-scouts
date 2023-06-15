@@ -1,10 +1,12 @@
-Cypress._.times(10, () => {
+Cypress._.times(50, () => {
   
 describe('Add product to cart', () => {
 
   beforeEach(() => {
 
     cy.visit('/');
+
+    cy.intercept('POST', 'https://api.demoblaze.com/viewcart').as('viewcart');
 
   });
 
@@ -24,6 +26,8 @@ describe('Add product to cart', () => {
 
     cy.contains('#cartur', 'Cart').click();
 
+    cy.wait('@viewcart');
+
     // verify if item is in the cart
     cy.get('@phoneTitleValue').then((phoneTitleValue) => {
       cy.get('.success > td')
@@ -42,22 +46,26 @@ describe('Add product to cart', () => {
     // go to Laptops page
     cy.contains('.list-group-item', 'Laptops').click();
 
-    /* wait until page is loaded because sometimes it is not loaded comletely, 
-    and test takes DOM element of previous page (Phone) and final assert fails*/
-    cy.wait(1500);
-
-    cy.get('h4.card-title')
+    cy.contains('.card-title', 'Sony vaio i5')
       .should('be.visible', { timeout: 5000 })
-      .first()
       .invoke('text')
-      .as('productTitle')
-      .then((productTitle) => {
-        cy.wrap(productTitle).as('laptopTitleValue');
+      .as('laptopTitle')
+      .then((laptopTitle) => {
+        cy.wrap(laptopTitle).as('laptopTitleValue');
       });
 
-    cy.addProductToCart('.col-md-6:nth-child(1)>div>a');
+    cy.contains('.card-title', 'Sony vaio i5').click();
+
+    // click Add to cart button
+    cy.intercept('POST', 'https://api.demoblaze.com/addtocart').as('addToCart');
+    cy.contains('.btn', 'Add to cart')
+        .should('be.visible', { timeout: 5000 })
+        .click();
+    cy.wait('@addToCart').its('response.statusCode').should('eq', 200);
 
     cy.contains('#cartur', 'Cart').click();
+
+    cy.wait('@viewcart');
 
     // verify if item is in the cart
     cy.get('@laptopTitleValue').then((laptopTitleValue) => {
