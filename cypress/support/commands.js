@@ -26,10 +26,10 @@
 
 Cypress.Commands.add('addProductToCart', (locator) => {
     cy.get(locator).click();
-    cy.intercept('POST', 'https://api.demoblaze.com/view').as('view');
+    cy.intercept('POST', '**/view').as('view');
     cy.wait('@view').its('response.statusCode').should('eq', 200);
     // click Add to cart button
-    cy.intercept('POST', 'https://api.demoblaze.com/addtocart').as('addToCart');
+    cy.intercept('POST', '**/addtocart').as('addToCart');
     cy.contains('.btn', 'Add to cart')
         .should('be.visible', { timeout: 5000 })
         .click();

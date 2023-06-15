@@ -4,11 +4,11 @@ describe('Add product to cart', () => {
 
   beforeEach(() => {
 
-    cy.intercept('GET', 'https://api.demoblaze.com/entries').as('entries');
+    cy.intercept('GET', '**/entries').as('entries');
     cy.visit('/');
     cy.wait('@entries');
 
-    cy.intercept('POST', 'https://api.demoblaze.com/viewcart').as('viewcart');
+    cy.intercept('POST', '**/viewcart').as('viewcart');
 
   });
 
@@ -59,7 +59,7 @@ describe('Add product to cart', () => {
     cy.contains('.card-title', 'Sony vaio i5').click();
 
     // click Add to cart button
-    cy.intercept('POST', 'https://api.demoblaze.com/addtocart').as('addToCart');
+    cy.intercept('POST', '**/addtocart').as('addToCart');
     cy.contains('.btn', 'Add to cart')
         .should('be.visible', { timeout: 5000 })
         .click();
