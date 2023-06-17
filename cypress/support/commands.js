@@ -28,6 +28,7 @@ Cypress.Commands.add('addProductToCart', (locator) => {
     cy.get(locator).click();
     cy.intercept('POST', '**/view').as('view');
     cy.wait('@view').its('response.statusCode').should('eq', 200);
+    cy.url().should('include', '/prod.html');
     // click Add to cart button
     cy.intercept('POST', '**/addtocart').as('addToCart');
     cy.contains('.btn', 'Add to cart')
