@@ -3,6 +3,11 @@ const dayjs = require('dayjs');
 Cypress._.times(5, () => {
 
 describe('Check purchase alert', () => {
+
+    beforeEach(() => {
+        cy.intercept('POST', '**/view').as('view');
+      })
+
     it('Checks if purchase alert contains information entered at purchase', () => {
 
         const name = 'testName';
@@ -22,6 +27,8 @@ describe('Check purchase alert', () => {
         cy.addProductToCart('.col-md-6:nth-child(1)>div>a');
 
         cy.contains('#cartur', 'Cart').click();
+
+        cy.wait('@view')
 
         // save total amount in Cart for further check
         cy.get("#totalp").should('be.visible', { timeout: 5000 }).invoke('text').as('totalPriceInCart');

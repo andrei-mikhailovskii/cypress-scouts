@@ -1,5 +1,10 @@
 describe('Check Order Amount', () => {
   Cypress._.times(5, () => {
+
+    beforeEach(() => {
+      cy.intercept('POST', '**/addtocart').as('addToCart');
+    })
+
     it('Checks the sum of two identical items in the cart', () => {
 
         // open website
@@ -11,8 +16,12 @@ describe('Check Order Amount', () => {
         // click Add to cart button
         cy.contains('.btn', 'Add to cart').should('be.visible', { timeout: 5000 }).click();
 
+        cy.wait('@addToCart');
+
         // click Add to cart button again
         cy.contains('.btn', 'Add to cart').should('be.visible', { timeout: 5000 }).click();
+
+        cy.wait('@addToCart');
 
         cy.contains('#cartur', 'Cart').click();
 
