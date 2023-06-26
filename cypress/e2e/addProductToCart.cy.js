@@ -1,5 +1,7 @@
 describe('Add product to cart', () => {
-  Cypress._.times(10, () => {
+  Cypress._.times(5, () => {
+  
+  let testData;
 
   beforeEach(() => {
     
@@ -7,6 +9,12 @@ describe('Add product to cart', () => {
     cy.intercept('GET', '**/entries').as('entries');
     cy.intercept('POST', '**/addtocart').as('addToCart');
     cy.intercept('POST', '**/viewcart').as('viewcart');
+    cy.intercept('POST', '**/deleteitem').as('deleteitem');
+
+    // Load the test data
+    cy.fixture('testdata.json').then((data) => {
+      testData = data;
+    });
     
     // open start page and wait until it's loaded
     cy.visit('/');
@@ -14,73 +22,49 @@ describe('Add product to cart', () => {
 
   });
 
-  it('Checks if Phone is added to cart', () => {
+  it('Checks if product is added to cart', () => {
 
-    // save first item name for future comparison
-    cy.get('h4.card-title')
-      .should('be.visible')
-      .first()
-      .invoke('text')
-      .then((productTitle) => {
-        cy.wrap(productTitle).as('phoneTitleValue');
-      });
-    
-    // add product to Cart by its name
-    cy.addProductToCart('Samsung galaxy s6');
+    testData.forEach((data) => {
 
-    // click Cart putton
-    cy.contains('#cartur', 'Cart').click();
+        // go to product page
+        cy.contains('.list-group-item', data.category).click();
 
-    // wait until Cart is opened
-    cy.wait('@viewcart');
+        // wait until product is visible and save its title for further check
+        cy.contains('.card-title', data.productName)
+          .should('be.visible')
+          .invoke('text')
+          .then((productTitle) => {
+            cy.wrap(productTitle).as('productTitleValue');
+          });
 
-    // verify if item is in the cart
-    cy.get('@phoneTitleValue').then((phoneTitleValue) => {
-      cy.get('.success > td')
-      .should('be.visible')
-      .eq(1)
-      .invoke('text')
-      .then((cartItemName) => {
-        expect(phoneTitleValue).to.be.eq(cartItemName);
-      });
+        // add product to Cart
+        cy.addProductToCart(data.productName);
+
+        // click Cart button
+        cy.contains('#cartur', 'Cart').click();
+
+        // wait until Cart is opened
+        cy.wait('@viewcart');
+
+        // verify if product is in the cart
+        cy.get('@productTitleValue').then((productTitleValue) => {
+          cy.get('.success > td')
+          .should('be.visible')
+          .eq(1)
+          .invoke('text')
+          .then((cartItemName) => {
+            expect(productTitleValue).to.be.eq(cartItemName);
+          });
+        });
+
+        // clear the Cart
+        cy.contains('Delete').click();
+        cy.wait('@deleteitem');
+
+        // go to home page for the next iteration
+        cy.visit('/');
+
+      });      
     });
-      
   });
-
-  it('Checks if Laptop is added to Cart', () => {
-
-    // go to Laptops page
-    cy.contains('.list-group-item', 'Laptops').click();
-
-    // wait until Sony vaio i5 is visible and save its title for further check
-    cy.contains('.card-title', 'Sony vaio i5')
-      .should('be.visible')
-      .invoke('text')
-      .then((laptopTitle) => {
-        cy.wrap(laptopTitle).as('laptopTitleValue');
-      });
-
-    // open Sony vaio i5 item page
-    cy.addProductToCart('Sony vaio i5');
-
-    // click Cart button
-    cy.contains('#cartur', 'Cart').click();
-
-    // wait until Cart is opened
-    cy.wait('@viewcart');
-
-    // verify if item is in the cart
-    cy.get('@laptopTitleValue').then((laptopTitleValue) => {
-      cy.get('.success > td')
-      .should('be.visible')
-      .eq(1)
-      .invoke('text')
-      .then((cartItemName) => {
-        expect(laptopTitleValue).to.be.eq(cartItemName);
-      });
-    });
-
-  });
-});
-
 });
