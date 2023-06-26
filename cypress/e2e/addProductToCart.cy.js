@@ -1,16 +1,16 @@
-Cypress._.times(10, () => {
-  
 describe('Add product to cart', () => {
+  Cypress._.times(10, () => {
 
   beforeEach(() => {
-
+    
+    // intercept requests for further waits of them
     cy.intercept('GET', '**/entries').as('entries');
+    cy.intercept('POST', '**/addtocart').as('addToCart');
+    cy.intercept('POST', '**/viewcart').as('viewcart');
+    
+    // open start page and wait until it's loaded
     cy.visit('/');
     cy.wait('@entries');
-
-    cy.intercept('POST', '**/addtocart').as('addToCart');
-
-    cy.intercept('POST', '**/viewcart').as('viewcart');
 
   });
 
@@ -18,24 +18,26 @@ describe('Add product to cart', () => {
 
     // save first item name for future comparison
     cy.get('h4.card-title')
-      .should('be.visible', { timeout: 5000 })
+      .should('be.visible')
       .first()
       .invoke('text')
-      .as('productTitle')
       .then((productTitle) => {
         cy.wrap(productTitle).as('phoneTitleValue');
       });
     
-    cy.addProductToCart('.col-md-6:nth-child(1)>div>a');
+    // add product to Cart by its name
+    cy.addProductToCart('Samsung galaxy s6');
 
+    // click Cart putton
     cy.contains('#cartur', 'Cart').click();
 
+    // wait until Cart is opened
     cy.wait('@viewcart');
 
     // verify if item is in the cart
     cy.get('@phoneTitleValue').then((phoneTitleValue) => {
       cy.get('.success > td')
-      .should('be.visible', { timeout: 5000 })
+      .should('be.visible')
       .eq(1)
       .invoke('text')
       .then((cartItemName) => {
@@ -50,30 +52,27 @@ describe('Add product to cart', () => {
     // go to Laptops page
     cy.contains('.list-group-item', 'Laptops').click();
 
+    // wait until Sony vaio i5 is visible and save its title for further check
     cy.contains('.card-title', 'Sony vaio i5')
-      .should('be.visible', { timeout: 5000 })
+      .should('be.visible')
       .invoke('text')
-      .as('laptopTitle')
       .then((laptopTitle) => {
         cy.wrap(laptopTitle).as('laptopTitleValue');
       });
 
-    cy.contains('.card-title', 'Sony vaio i5').click();
+    // open Sony vaio i5 item page
+    cy.addProductToCart('Sony vaio i5');
 
-    // click Add to cart button
-    cy.contains('.btn', 'Add to cart')
-        .should('be.visible', { timeout: 5000 })
-        .click();
-    cy.wait('@addToCart').its('response.statusCode').should('eq', 200);
-
+    // click Cart button
     cy.contains('#cartur', 'Cart').click();
 
+    // wait until Cart is opened
     cy.wait('@viewcart');
 
     // verify if item is in the cart
     cy.get('@laptopTitleValue').then((laptopTitleValue) => {
       cy.get('.success > td')
-      .should('be.visible', { timeout: 5000 })
+      .should('be.visible')
       .eq(1)
       .invoke('text')
       .then((cartItemName) => {
