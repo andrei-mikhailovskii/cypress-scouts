@@ -29,7 +29,7 @@ describe('Check purchase alert', () => {
         cy.wait('@bycat');
 
         // add first monitor to cart
-        cy.addProductToCart('.col-md-6:nth-child(1)>div>a');
+        cy.addProductToCart('Apple monitor 24');
 
         // click Cart button
         cy.contains('#cartur', 'Cart').click();
