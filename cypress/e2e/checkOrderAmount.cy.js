@@ -1,5 +1,4 @@
 describe('Check Order Amount', () => {
-  Cypress._.times(5, () => {
 
     beforeEach(() => {
 
@@ -40,5 +39,4 @@ describe('Check Order Amount', () => {
         });
 
     });
-  });
 });

@@ -1,5 +1,4 @@
 describe('Add product to cart', () => {
-  Cypress._.times(5, () => {
   
   let testData;
 
@@ -66,5 +65,4 @@ describe('Add product to cart', () => {
 
       });      
     });
-  });
 });

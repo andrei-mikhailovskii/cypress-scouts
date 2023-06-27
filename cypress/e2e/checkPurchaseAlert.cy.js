@@ -1,5 +1,4 @@
 describe('Check purchase alert', () => {
-    Cypress._.times(5, () => {
 
     beforeEach(() => {
 
@@ -95,7 +94,5 @@ describe('Check purchase alert', () => {
         // check if redirect to home page has happened
         cy.url().should('eq', Cypress.config().baseUrl + '/index.html');
           
-    })
-})
-
+    });
 });
