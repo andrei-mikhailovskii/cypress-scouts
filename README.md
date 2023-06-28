@@ -18,8 +18,9 @@ Make sure the following software is installed on your machine:
 
 ### Steps
 1. Clone the repository: `git clone https://github.com/andrei-mikhailovskii/cypress-scouts.git`
-2. Navigate to the repository's root folder on your machine.
-3. Open the command line in the folder and run the following command: `npx cypress open` (For headless mode, run `npx cypress run` instead and skip the next steps).
-4. Once Cypress is opened, click on "E2E Testing."
-5. Choose any browser and click "Start E2E Testing in {browser'sName}."
-6. Once the browser is opened, click on any test to run it.
+2. Navigate to the repository's root folder on your machine
+3. Open the command line in the folder and run the following command: `npx cypress install`
+4. Once Cypress is installed, run the following command: `npx cypress open` (For headless mode, run `npx cypress run` instead and skip the next steps)
+5. Once Cypress is opened, click on "E2E Testing"
+6. Choose any browser and click "Start E2E Testing in {browser'sName}"
+7. Once the browser is opened, click on any test to run it
